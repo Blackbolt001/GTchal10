@@ -1,66 +1,74 @@
-const Manager = require("../lib/Manager");
+const generateTeam  = (team) => {
 
-const renderManager = function(manager)
+const generateManager = (manager) => {
+    return `
+    <div class ="container">
+
+    <div class ="card employee-card">
+    <div class ="card-header">
+    <h2 class =" card-title">${manager.getName()}</h2>
+    <h3 class =" card-title">Manager></h3>
+    </div>
+
+    <div class="card-body">
+    <p class="id">ID: ${manager.getId()}</p>
+    <p class="email">Email: <a href="email:${manager.getEmail()}">${manager.getEmail()}</a></p>
+    <p class ="office">office number:${manager.getOfficeNumber()}</p>
+    </div>
+    </div>
+    </div> 
+    `;}
+
+    const generateEngineer = (engineer)
 {
     return `
     <div class ="container">
 
     <div class ="card">
     <div class ="card-header">
-    <h2>${manager.name}</h2>
+    <h2>${engineer.getName()}</h2>
     <h3>Manager</h3>
     </div>
 
     <div class="card-body">
-    <p class="id">ID: ${manager.id}</p>
-    <p class="email">Email: <a href="email:${manager.email}">${manager.email}</a></p>
-    <p class ="office">office number:${manager.officeNumber}</p>
+    <p class="id">ID: ${engineer.getId()}</p>
+    <p class="email">Email: <a href="email:${engineer.getEmail()}">${engineer.getEmail()}</a></p>
+    <p class ="github">Github: <a href ="https://github.com/${engineer.getGithub()}"<${engineer.getGithub()}</a></p>
     </div>
     </div>
     </div> 
     `;}
 
-    const renderEngineer = function(engineer)
+    const generateIntern= (intern)
 {
     return `
     <div class ="container">
 
     <div class ="card">
+
     <div class ="card-header">
-    <h2>${engineer.name}</h2>
-    <h3>Manager</h3>
+        <h2>${intern.getName()}</h2>
+        <h3>Manager</h3>
     </div>
 
     <div class="card-body">
-    <p class="id">ID: ${engineer.id}</p>
-    <p class="email">Email: <a href="email:${engineer.email}">${engineer.email}</a></p>
-    <p class ="github">Github: <a href ="https://github.com/${engineer.github}"<${engineer.github}</a></p>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <p class="id">ID: ${intern.getId()}</p></li>
+        <li class="list-group-item">
+            <p class="email">Email: <a href="email:${intern.getEmail()}">${intern.getEmail()}</a></p></li>
+        <li class="list-group-item">
+            <p class="school">School: ${intern.getSchool()}</p></li>
+    </ul>
     </div>
     </div>
     </div> 
-    `;}
+    `;
+};
 
-    const renderIntern= function(intern)
-{
-    return `
-    <div class ="container">
-
-    <div class ="card">
-    <div class ="card-header">
-    <h2>${intern.name}</h2>
-    <h3>Manager</h3>
-    </div>
-
-    <div class="card-body">
-    <p class="id">ID: ${intern.id}</p>
-    <p class="email">Email: <a href="email:${intern.email}">${intern.email}</a></p>
-    <p class="school">School: ${intern.school}</p>
-    </div>
-    </div>
-    </div> 
-    `;}
-
-    renderOutputHTML = (data) => {
+    const html = []
+    
+    (data) => {
         pageArray=[];
         for(let i =0; i < data.length, i++) {
             const employee= data[i];
@@ -80,7 +88,6 @@ const renderManager = function(manager)
             }
         }
     const employeeCards = pageArray.join('')
-    const generateTeam  = generateTeamPage(employeeCards)
     return generateTeam;
     }
     const generateTeamPage = function (employeeCards) {
@@ -93,6 +100,7 @@ const renderManager = function(manager)
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Profile Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     </head>
     <body>
     <header>
@@ -101,13 +109,13 @@ const renderManager = function(manager)
     <main>
     <div class="container">
     <div class="row" id="cards">
-    ${employeeCards}
+    ${generateTeam(team)}
     </div>
     </div>
     </main>
     </body>
     </html>
-    `;}
+    `;
+};
     
 
-    module.exports = renderOutputHTML;
