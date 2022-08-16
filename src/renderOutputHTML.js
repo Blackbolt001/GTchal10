@@ -1,8 +1,8 @@
 const generateTeam  = (team) => {
 
 const generateManager = (manager) => {
+
     return `
-    <div class ="container">
 
     <div class ="card employee-card">
     <div class ="card-header">
@@ -24,31 +24,35 @@ const generateManager = (manager) => {
     return `
     <div class ="container">
 
-    <div class ="card">
+    <div class ="card employee-card">
     <div class ="card-header">
-    <h2>${engineer.getName()}</h2>
-    <h3>Manager</h3>
+    <h2 class =" card-title">${engineer.getName()}</h2>
+    <h3 class =" card-title">Engineer></h3>
     </div>
 
     <div class="card-body">
-    <p class="id">ID: ${engineer.getId()}</p>
-    <p class="email">Email: <a href="email:${engineer.getEmail()}">${engineer.getEmail()}</a></p>
-    <p class ="github">Github: <a href ="https://github.com/${engineer.getGithub()}"<${engineer.getGithub()}</a></p>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <p class="id">ID: ${engineer.getId()}</p></li>
+        <li class="list-group-item">
+            <p class="email">Email: <a href="email:${engineer.getEmail()}">${engineer.getEmail()}</a></p></li>
+        <li class="list-group-item">
+            <p class="github">Github: <a href="https://github.com${engineer.getGithub()}" target="_blank">${engineer.getGithub()}</a></p></li>
+    </ul>
     </div>
     </div>
-    </div> 
-    `;}
+
+    `;
+};
 
     const generateIntern= (intern)
 {
     return `
-    <div class ="container">
 
-    <div class ="card">
-
+    <div class ="card employee-card">
     <div class ="card-header">
-        <h2>${intern.getName()}</h2>
-        <h3>Manager</h3>
+    <h2 class =" card-title">${intern.getName()}</h2>
+    <h3 class =" card-title">Intern></h3>
     </div>
 
     <div class="card-body">
@@ -62,7 +66,6 @@ const generateManager = (manager) => {
     </ul>
     </div>
     </div>
-    </div> 
     `;
 };
 
