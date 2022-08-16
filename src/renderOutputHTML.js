@@ -1,33 +1,34 @@
+
 const generateTeam  = (team) => {
-
 const generateManager = (manager) => {
-
     return `
-
     <div class ="card employee-card">
     <div class ="card-header">
     <h2 class =" card-title">${manager.getName()}</h2>
-    <h3 class =" card-title">Manager></h3>
     </div>
 
     <div class="card-body">
-    <p class="id">ID: ${manager.getId()}</p>
-    <p class="email">Email: <a href="email:${manager.getEmail()}">${manager.getEmail()}</a></p>
-    <p class ="office">office number:${manager.getOfficeNumber()}</p>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <p class="id">ID: ${manager.getId()}</p></li>
+        <li class="list-group-item">
+            <p class="email">Email: <a href="email:${manager.getEmail()}">${manager.getEmail()}</a></p></li>
+        <li class="list-group-item">
+            <p class="OfficeNumber">Office Number:${manager.getOfficeNumber()}</p></li>
+    </ul>
     </div>
     </div>
-    </div> 
-    `;}
 
-    const generateEngineer = (engineer)
-{
+    `;
+};
+
+
+    const generateEngineer = (engineer) => {
     return `
-    <div class ="container">
 
     <div class ="card employee-card">
     <div class ="card-header">
     <h2 class =" card-title">${engineer.getName()}</h2>
-    <h3 class =" card-title">Engineer></h3>
     </div>
 
     <div class="card-body">
@@ -45,14 +46,13 @@ const generateManager = (manager) => {
     `;
 };
 
-    const generateIntern= (intern)
+    const generateIntern= (intern) => {
 {
     return `
 
     <div class ="card employee-card">
     <div class ="card-header">
     <h2 class =" card-title">${intern.getName()}</h2>
-    <h3 class =" card-title">Intern></h3>
     </div>
 
     <div class="card-body">
@@ -69,32 +69,25 @@ const generateManager = (manager) => {
     `;
 };
 
-    const html = []
-    
-    (data) => {
-        pageArray=[];
-        for(let i =0; i < data.length, i++) {
-            const employee= data[i];
-            const position=employee.getPosition();
-
-            if (position === 'Manager1') {
-                const managerCard1 = renderManager(employee);
-                pageArray.push(managerCard1);
-            }
-            if (position === 'Engineer1') {
-                const engineerCard1 = renderEngineer(employee);
-                pageArray.push(engineerCard1);
-            }
-            if (position === 'Intern1') {
-                const internCard1 = renderIntern(employee);
-                pageArray.push(internCard1);
-            }
-        }
-    const employeeCards = pageArray.join('')
-    return generateTeam;
-    }
-    const generateTeamPage = function (employeeCards) {
-        return`
+    const html = [];
+    html.push(
+        team.filter((employee) => employee.getRole() === "Manager")
+        .map((manager) => generateManager(manager))
+    );
+    html.push(
+        team.filter((employee) => employee.getRole() === "Engineer")
+        .map((engineer) => generateEngineer(engineer))
+        .join("")
+    );
+    html.push(
+        team.filter((intern) => intern.getRole()  === "Intern")
+        .map((intern) => generateIntern(intern))
+        .join("")
+    );
+    return html.join("");
+    };
+module.exports = (team) => {
+    return`
 
         <!DOCTYPE html>
 <html lang="en">
@@ -104,6 +97,7 @@ const generateManager = (manager) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team Profile Generator</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    <link rel="stylesheet" href="style.css">
     </head>
     <body>
     <header>
@@ -120,5 +114,4 @@ const generateManager = (manager) => {
     </html>
     `;
 };
-    
-
+}
