@@ -1,24 +1,28 @@
 
-const renderOutputHTML = require('./src/renderOutputHTML')
-
-
-
+const inquirer = require("inquirer");
+const fs = require("fs");
+const renderOutputHTML = require("./src/renderOutputHTML.js");
+const util = require("util");
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
-const inquirer = require("inquirer");
-const fs = require("fs");
 
-const employeeArray = []
+const newTeamData = []
 
 
-const hireManager = () => {
-    return inquirer.prompt (
- [
+const questions = async () => {
+    const answers = await inquirer.prompt([
+ 
+    {
+        type:'list',
+        name:'start',
+        message:'Are you the Manager?',
+        choices:["Yes,No"]
+    },
     {
         type:'input',
         name:'name',
-        message: 'Lets select a manager for our team, What is the Managers Name?'
+        message: 'Lets select a Team Member for our team, What is the Team Members Name?'
     },
     {
         type:'input',
@@ -30,103 +34,83 @@ const hireManager = () => {
         name: 'email',
         message :'Please create/designate Managers Email'
     },
+
     {
-        type:'input',
-        name:'officeNumber',
-        message :'please designate an office number for the Manager'
-    }
+        type:'checkbox',
+        name:'newTeamMember',
+        message:' Which new Team member would you like to hire first?',
+        choices: ["Engineer", "Intern"],
+    },
 ])
-.then(managerData) => {
-    const {name,id,email,officeNumber} = managerData;
-    const manager = new Manager (name,id,email,officeNumber);
-    employeeArray.push(manager);
-    console.log(manager);
+    if(answers.start === "Yes") {
+const managerAnswers = await inquirer
+.prompt([
+    {
+        
+            type:'input',
+            name:'officeNumber',
+            message :'please designate an office number for the Manager'
+        },
+])
+
+const newManager = new Manager(
+    answers.name,answers.id,answers.email,answers.officeNumber
+);
+newTeamData.push(newManager);
+}
+else if (answers.newTeamMember === "Engineer") {
+    const gitHubAnswers = await inquirer
+    .prompt([
+{
+    type:'input',
+    name:"github",
+    message:"Please enter your Github User name."
+}
+    ])
+    const newEngineer = new Engineer(
+        answers.name,answers.id,answers.email,gitHubAnswers.github
+    );
+    newTeamData.push(newEngineer);
+}
+else if (answers.newTeamMember === "Intern") {
+    const internAnswers = await inquirer
+    .prompt([
+{
+    type:'input',
+    name:"school",
+    message:"What School is your internship from?"
+},
+])
+const newIntern = new Intern(
+    answers.name,answers.id,answers.email,internAnswers.school
+);
+newTeamData.push(newIntern);
+}
 };
 
-const hireEmployee = () => {
-    console.log('Congratulations!!');
-    return inquirer.prompt ([
+async function promptQuestions() {
+    await questions()
+    const addTeamAnswers = await inquirer
+    .prompt([
         {
-            type: 'checkbox',
-            name: 'position',
-            message:'Which role is being hired?',
-            choices: ['Intern', 'Engineer']
-        },
-        {
-            type: 'input',
-            name: 'name',
-            message:'Please enter the new hires name'
-        },
-        {
-            type:'input',
-            name:'email',
-            message:'Please enter an email address for new employee'
-        },
-        { 
-            type:'input',
-            name:'github',
-            message:'Please enter a Github username for new employee',
-            when: (input) => input.position ==="Engineer"
-        },
-        {
-            type:'input',
-            name: 'school',
-            message:'Enter the school name of new Intern'
-        },
-        {
-            type:'confirm',
-            name:'confirmHire',
-            message: ' Do you have other members to add to your team?',
-            default:false
+            type:"list",
+            name:"create",
+            message:" Are you ready to create your Team?",
+            choices: ["add another member to the Team","Create Team Now"],
         }
     ])
-    .then(employeeData) => {
-        let {name,id,email,position,github,school,confirm} = employeeData;
-        let employee;
-        if (position === "Engineer") {
-            employee = new Engineer (name,id,email,github);
-            console.log(employee);
-        }
-        else if (position === "Intern") {
-            employee = new Intern (name,id,email,school);
-            console.log(employee);
-        }
-        employeeArray.push(employee);
-        if(confirmHire) {
-            return hireEmployee(employeeArray) }
-            else {
-                return employeeArray;
-            }
-        };
+if (addTeamAnswers.create === "add another member to the Team") {
+    return promptQuestions()
+}
+return generateTeam();
+}
+promptQuestions();
 
-        const writeFile = data => {
-            fs.writeFile('\Users\Gossett\OneDrive\Desktop\GTchal10\src\renderOutputHTML.js', data, err => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                else {
-                    console.log('your team has been created')
-                }
-            })};
-            hireManager()
-            .then(hireEmployee)
-            .then(employeeArray => {
-                return renderOutputHTML(employeeArray);
-            })
-            .then(pageHTML => {
-                return writeFile(pageHTML);
-            });
-
-        
-
+function generateTeam() {
+    console.log('Congratulations!!',newTeamData)
+    fs.writeFileSync("./output/index.html");
+}
     
-    
-    
-
-    
-    
-
-
+               
 
 
