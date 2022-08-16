@@ -1,3 +1,5 @@
+const Manager = require("../lib/Manager");
+
 const renderManager = function(manager)
 {
     return `
@@ -56,6 +58,55 @@ const renderManager = function(manager)
     </div>
     </div>
     </div> 
+    `;}
+
+    renderOutputHTML = (data) => {
+        pageArray=[];
+        for(let i =0; i < data.length, i++) {
+            const employee= data[i];
+            const position=employee.getPosition();
+
+            if (position === 'Manager1') {
+                const managerCard1 = renderManager(employee);
+                pageArray.push(managerCard1);
+            }
+            if (position === 'Engineer1') {
+                const engineerCard1 = renderEngineer(employee);
+                pageArray.push(engineerCard1);
+            }
+            if (position === 'Intern1') {
+                const internCard1 = renderIntern(employee);
+                pageArray.push(internCard1);
+            }
+        }
+    const employeeCards = pageArray.join('')
+    const generateTeam  = generateTeamPage(employeeCards)
+    return generateTeam;
+    }
+    const generateTeamPage = function (employeeCards) {
+        return`
+
+        <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Profile Generator</title>
+    </head>
+    <body>
+    <header>
+    <h3>Team Profile Generator</h3>
+    </header>
+    <main>
+    <div class="container">
+    <div class="row" id="cards">
+    ${employeeCards}
+    </div>
+    </div>
+    </main>
+    </body>
+    </html>
     `;}
     
 
