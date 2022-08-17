@@ -1,120 +1,138 @@
 
-const generateManager = (manager) => {
-    return `
-    <div class ="card employee-card">
-    <div class ="card-header">
-    <h2 class =" card-title">${manager.getName()}</h2>
-    </div>
+const generateManager = function (manager) {
+return `
+<div class="col-4 mt-4">
+<div class="card h-100">
+<div class="card-header">
+    <h3>${manager.name}</h3>
+    <h4>Manager</h4><i class="material-icons">content_paste</i>
+</div>
 
-    <div class="card-body">
-    <ul class="list-group">
-        <li class="list-group-item">
-            <p class="id">ID: ${manager.getId()}</p></li>
-        <li class="list-group-item">
-            <p class="email">Email: <a href="email:${manager.getEmail()}">${manager.getEmail()}</a></p></li>
-        <li class="list-group-item">
-            <p class="OfficeNumber">Office Number:${manager.getOfficeNumber()}</p></li>
-    </ul>
-    </div>
-    </div>
-    `;
+<div class="card-body">
+    p class="id">ID: ${manager.id}</p>
+    <p class="email">Email: <a href="mailto:${manager.email}">${manager.email}</a></p>
+    <p class="office">Office Number: ${manager.officeNumber}</p>
+</div>
+</div>
+</div>
+ `;
 }
-    const generateEngineer = (engineer) => {
-    return `
-    <div class ="card employee-card">
-    <div class ="card-header">
-    <h2 class =" card-title">${engineer.getName()}</h2>
-    </div>
-    <div class="card-body">
-    <ul class="list-group">
-        <li class="list-group-item">
-            <p class="id">ID: ${engineer.getId()}</p></li>
-        <li class="list-group-item">
-            <p class="email">Email: <a href="email:${engineer.getEmail()}">${engineer.getEmail()}</a></p></li>
-        <li class="list-group-item">
-            <p class="github">Github: <a href="https://github.com${engineer.getGithub()}" target="_blank">${engineer.getGithub()}</a></p></li>
-    </ul>
-    </div>
-    </div>
-    `;
-    }  
-      const generateIntern= (intern) => {
-        {
-            return `
-     <div class ="card employee-card">
-     <div class ="card-header">
-    <h2 class =" card-title">${intern.getName()}</h2>
-    </div>
-        
-    <div class="card-body">
-        <ul class="list-group">
-        <li class="list-group-item">
-            <p class="id">ID: ${intern.getId()}</p></li>
-        <li class="list-group-item">
-            <p class="email">Email: <a href="email:${intern.getEmail()}">${intern.getEmail()}</a></p></li>
-        <li class="list-group-item">
-            <p class="school">School: ${intern.getSchool()}</p></li>
-        </ul>
-    </div>
-    </div>
-`};
+
+const generateEngineer = function (engineer) {
+return `
+<div class="col-4 mt-4">
+<div class="card h-100">
+<div class="card-header">
+     <h3>${engineer.name}</h3>
+    <h4>Engineer</h4><i class="material-icons">laptop_mac</i>
+</div>
+
+ <div class="card-body">
+ <p class="id">ID: ${engineer.id}</p>
+ <p class="email">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
+ <p class="github">Github: <a href="https://github.com/${engineer.github}">${engineer.github}</a></p>
+ </div>
+ </div>
+ </div>
+    `
+}
+
+const generateIntern = function (intern) {
+return `
+<div class="col-4 mt-4">
+<div class="card h-100">
+<div class="card-header">
+    <h3>${intern.name}</h3>
+    <h4>Intern</h4><i class="material-icons">assignment_ind</i>
+</div>
+
+<div class="card-body">
+     <p class="id">ID: ${intern.id}</p>
+    <p class="email">Email:<a href="mailto:${intern.email}">${intern.email}</a></p>
+    <p class="school">School: ${intern.school}</p>
+ </div>
+ </div>
+ </div>
+    `
 };
 
-
+// push array to page 
 generateHTML = (data) => {
-    teamObj = [];
+
+    // array for cards 
+    pageArray = []; 
 
     for (let i = 0; i < data.length; i++) {
         const employee = data[i];
         const role = employee.getRole(); 
 
-    if (role === 'Manager') {
-    const managerCard = generateManager(employee);
-    teamObj.push(managerCard);
- }
-    if (role === 'Engineer') {
-    const engineerCard = generateEngineer(employee);
-    teamObj.push(engineerCard);
- }
-    if (role === 'Intern') {
-    const internCard = generateIntern(employee);
-    teamObj.push(internCard);
-}} 
 
-const employeeCards = teamObj.join('')
+        // call manager function
+        if (role === 'Manager') {
+            const managerCard = generateManager(employee);
+
+            pageArray.push(managerCard);
+        }
+
+        // call engineer function
+        if (role === 'Engineer') {
+            const engineerCard = generateEngineer(employee);
+
+            pageArray.push(engineerCard);
+        }
+
+        // call intern function 
+        if (role === 'Intern') {
+            const internCard = generateIntern(employee);
+
+            pageArray.push(internCard);
+        }
         
-            const generateTeam = generateTeamPage(employeeCards); 
-            return generateTeam;
-}
-const generateTeamPage = function (employeeCards) 
-{
-    return
-    `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Profile Generator</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-    <header>
-    <h3>Team Profile Generator</h3>
-    </header>
-    <main>
-    <div class="container">
-    <div class="row" id="cards">
-    ${employeeCards}
-    </div>
-    </div>
-    </main>
-    <script src="../scripts/index.js"></script>
-    <script src="../scripts/src/renderHTML.js"></script>
-    </body>
-    </html>`;
-}
-    
+    }
 
-module.exports = generateHTML;
+    // joining strings 
+    const employeeCards = pageArray.join('')
+
+    // return to generated page
+    const generateTeam = generateTeamPage(employeeCards); 
+    return generateTeam;
+
+}
+
+// generate html page 
+const generateTeamPage = function (employeeCards) {   
+  return`
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Team Profile Generator</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+      <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+ <header>
+    <nav class="navbar" id="navbar">
+        <span class="navbar-brand mb-0 h1 w-100 text-center" id="navbar-text">Team Profile Generator</span>
+ </nav>
+ </header>
+ <main>
+ <div class="container">
+ <div class="row justify-content-center" id="team-cards">
+ <!--Team Cards-->
+${employeeCards}
+</div>
+</div>
+</main>
+</body>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </html>
+
+
+`;
+}
+
+// export to index
+module.exports = generateHTML; 

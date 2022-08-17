@@ -3,7 +3,6 @@ const generateHTML = require("./src/generateHTML");
 const inquirer = require("inquirer");
 const fs = require("fs");
 
-
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -15,27 +14,39 @@ const hireManager = () => {
 {
         type:'input',
         name:'name',
-        message: ' What is the Team Managers Name?'
-    },
+        message: ' What is the Team Managers Name?',
+   },
     {
-        type:'input',
-        name:'id',
-        message:'Please assign an Employee ID'
-    },
+      type:'input',
+      name:'id',
+      message:'Please assign an Employee ID',
+
+ },
     { 
-        type:'input',
-        name: 'email',
-        message :'Please create/designate Managers Email'
-    },
-        {
-            type:'input',
-            name:'number',
-            message :'please designate an office number for the Manager'
-    }])
-.then(managerData => {
-  const {name,id,email,number} = managerData;
+      type:'input',
+      name: 'email',
+      message :'Please create/designate Managers Email',
+        validate: email => {
+      const valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+      if (valid) {
+      return true;
+       } else {
+      console.log ('Please enter an email!')
+      return false; 
+   }}
+  },
+  {
+        
+    type:'input',
+    name:'number',
+    message :'please designate an office number for the Manager',
+  }
+              
+])
+.then(managerInput => {
+  const {name,id,email,number} = managerInput;
   const manager = new Manager (name,id,email,number);
-  employeeArray.push(manager);
+  employeeArray.push(manager); console.log(manager);
 })
 };
 const addEmployee = () => {
@@ -95,10 +106,10 @@ return inquirer.prompt ([
   {
     employee = new Intern (name, id, email, school);
   }
-employeeArray.push(employee);
+employeeArray.push(employee); console.log(employee);
 if (confirmAddEmployee)
 {
-  return addEmployee(employeeArray);
+  return addEmployee();
 }
 else {
   return employeeArray;
@@ -107,7 +118,7 @@ else {
 };
 
 const writeFile = data => {
-  fs.writeFile('./distn/index.html', data, err => {
+  fs.writeFile('./dist/index.html',data, err => {
     if (err) {
       console.log(err);
       return;
