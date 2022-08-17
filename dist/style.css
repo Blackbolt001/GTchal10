@@ -1,33 +1,35 @@
-.card-header {
-    background-color: #e84855;
+body {
+  background-color:black;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  display: block;
+  
+}
+ container {
+  height: 80%;
+  width: 100%;
+ }
+ div.card-header {
+    background-color: #55b0ec;
     color: #ffffff;
   }
-  
-  .container {
-    margin:100px auto
-    margin: 3em auto;
-    flex-wrap: wrap;
+  a {
+color:rgb(34, 1, 105);
+  }
+  h3 {
+    color:greenyellow;
   }
   
-  .employee-card {
+   div.card-body {
     margin: 1em;
-    max-width: 280px;
-    width: 90%;
-    min-height: 22rem;
-    background-color: #007bff;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.7);
+    min-height:100px;
+    background-color: #353c40;
+    color: rgb(250, 13, 135);
+    box-shadow: 4px 4px 8px  #f8a8a6;
     border: none;
+    opacity:2;
+    font-size: 24px;
+
   }
-  
-  .card-body {
-    background-color: #f6f7f8;
-  }
-  
-  .list-group-item {
-    color: #000000;
-    text-decoration: none;
+  div.card.h-100 {
+    background-color: #f2ff00;
   }

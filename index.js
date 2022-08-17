@@ -106,7 +106,8 @@ return inquirer.prompt ([
   {
     employee = new Intern (name, id, email, school);
   }
-employeeArray.push(employee); console.log(employee);
+employeeArray.push(employee);
+ console.log(employee);
 if (confirmAddEmployee)
 {
   return addEmployee();
