@@ -1,28 +1,21 @@
-const path = require("path")
+const generateHTML = require("./src/generateHTML");
+
 const inquirer = require("inquirer");
 const fs = require("fs");
-const render = require("./src/renderOutputHTML");
+
 
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
-const newTeamData = []
+const employeeArray = [];
 
-
-const questions = async () => {
-    const answers = await inquirer.prompt(
- 
-    {
-        type:'list',
-        name:'start',
-        message:'Are you the Manager?',
-        choices:["Yes,No"]
-    },
-    {
+const hireManager = () => {
+  return inquirer.prompt ([
+{
         type:'input',
         name:'name',
-        message: 'Lets select a Team Member for our team, What is the Team Members Name?'
+        message: ' What is the Team Managers Name?'
     },
     {
         type:'input',
@@ -34,83 +27,98 @@ const questions = async () => {
         name: 'email',
         message :'Please create/designate Managers Email'
     },
-
-    {
-        type:'checkbox',
-        name:'newTeamMember',
-        message:' Which new Team member would you like to hire first?',
-        choices: ["Engineer", "Intern"],
-    },
-])
-    if(answers.start === "Yes") {
-const managerAnswers = await inquirer
-.prompt([
-    {
-        
+        {
             type:'input',
-            name:'officeNumber',
+            name:'number',
             message :'please designate an office number for the Manager'
-        },
+    }])
+.then(managerData => {
+  const {name,id,email,number} = managerData;
+  const manager = new Manager (name,id,email,number);
+  employeeArray.push(manager);
+})
+};
+const addEmployee = () => {
+  console.log('employees added')
+;
+return inquirer.prompt ([
+  {
+    type:'list',
+    name:'role',
+    message:' Which new Team member would you like to hire first?',
+    choices: ["Engineer", "Intern"]
+  },
+  { 
+    type:'input',
+    name:'name',
+    message: ' What is the Team Members Name?'
+  },
+  {
+      type:'input',
+      name:'id',
+      message:'Please assign an Employee ID'
+  },
+  {
+      type:'input',
+      name: 'email',
+      message :'Please create/designate Team Member Email'
+  },
+  {
+      type:'input',
+      name:"github",
+      message:"Please enter your Github User name.",
+      when: (input) => input.role === "Engineer", 
+  },
+  {
+    
+      type:'input',
+      name:'school',
+      message:'What School is your internship from?',
+      when: (input) => input.role === "Intern"
+  },
+  {
+    type: 'confirm',
+    name: 'confirmAddEmployee',
+    message: 'Would you like to add more team members?',
+    default: false
+  }
 ])
+.then(employeeData => {
+  let {name,id,email,role,github,school,confirmAddEmployee} = employeeData;
+  let employee;
 
-const newManager = new Manager(
-    answers.name,answers.id,answers.email,answers.officeNumber
-);
-newTeamData.push(newManager);
-}
-else if (answers.newTeamMember === "Engineer") {
-    const gitHubAnswers = await inquirer
-    .prompt([
+  if (role === "Engineer")
+   {
+    employee = new Engineer (name, id, email, github);
+  } 
+  else if (role ==="Intern")
+  {
+    employee = new Intern (name, id, email, school);
+  }
+employeeArray.push(employee);
+if (confirmAddEmployee)
 {
-    type:'input',
-    name:"github",
-    message:"Please enter your Github User name."
+  return addEmployee(employeeArray);
 }
-    ])
-    const newEngineer = new Engineer(
-        answers.name,answers.id,answers.email,gitHubAnswers.github
-    );
-    newTeamData.push(newEngineer);
+else {
+  return employeeArray;
 }
-else if (answers.newTeamMember === "Intern") {
-    const internAnswers = await inquirer
-    .prompt([
-{
-    type:'input',
-    name:"school",
-    message:"What School is your internship from?"
-},
-])
-const newIntern = new Intern(
-    answers.name,answers.id,answers.email,internAnswers.school
-);
-newTeamData.push(newIntern);
-}
+})
 };
 
-async function promptQuestions() {
-    await questions()
-    const addTeamAnswers = await inquirer
-    .prompt([
-        {
-            type:"list",
-            name:"create",
-            message:" Are you ready to create your Team?",
-            choices: ["add another member to the Team","Create Team Now"],
-        }
-    ])
-if (addTeamAnswers.create === "add another member to the Team") {
-    return promptQuestions()
-}
-return generateTeam();
-}
-promptQuestions();
-
-function generateTeam() {
-    console.log('Congratulations!!',newTeamData)
-    fs.writeFileSync("./output/index.html",generateTeam(newTeamData),"utf-8");
-    
-    
-               
-
-
+const writeFile = data => {
+  fs.writeFile('./distn/index.html', data, err => {
+    if (err) {
+      console.log(err);
+      return;
+     }  else {
+        console.log("your file has been generated")
+      }
+    })
+  };
+hireManager().then(addEmployee).then(employeeArray => {
+  return generateHTML(employeeArray);
+})
+.then(pageHTML => {
+  return writeFile(pageHTML);
+});

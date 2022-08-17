@@ -1,5 +1,4 @@
 
-const generateTeam  = (team) => {
 const generateManager = (manager) => {
     return `
     <div class ="card employee-card">
@@ -18,19 +17,14 @@ const generateManager = (manager) => {
     </ul>
     </div>
     </div>
-
     `;
-};
-
-
+}
     const generateEngineer = (engineer) => {
     return `
-
     <div class ="card employee-card">
     <div class ="card-header">
     <h2 class =" card-title">${engineer.getName()}</h2>
     </div>
-
     <div class="card-body">
     <ul class="list-group">
         <li class="list-group-item">
@@ -42,54 +36,60 @@ const generateManager = (manager) => {
     </ul>
     </div>
     </div>
-
     `;
-};
-
-    const generateIntern= (intern) => {
-{
-    return `
-
-    <div class ="card employee-card">
-    <div class ="card-header">
+    }  
+      const generateIntern= (intern) => {
+        {
+            return `
+     <div class ="card employee-card">
+     <div class ="card-header">
     <h2 class =" card-title">${intern.getName()}</h2>
     </div>
-
+        
     <div class="card-body">
-    <ul class="list-group">
+        <ul class="list-group">
         <li class="list-group-item">
             <p class="id">ID: ${intern.getId()}</p></li>
         <li class="list-group-item">
             <p class="email">Email: <a href="email:${intern.getEmail()}">${intern.getEmail()}</a></p></li>
         <li class="list-group-item">
             <p class="school">School: ${intern.getSchool()}</p></li>
-    </ul>
+        </ul>
     </div>
     </div>
-    `;
+`};
 };
 
-    const html = [];
-    html.push(
-        team.filter((employee) => employee.getRole() === "Manager")
-        .map((manager) => generateManager(manager))
-    );
-    html.push(
-        team.filter((employee) => employee.getRole() === "Engineer")
-        .map((engineer) => generateEngineer(engineer))
-        .join("")
-    );
-    html.push(
-        team.filter((intern) => intern.getRole()  === "Intern")
-        .map((intern) => generateIntern(intern))
-        .join("")
-    );
-    return html.join("");
-    };
-module.exports = (team) => {
-    return`
 
-        <!DOCTYPE html>
+generateHTML = (data) => {
+    teamObj = [];
+
+    for (let i = 0; i < data.length; i++) {
+        const employee = data[i];
+        const role = employee.getRole(); 
+
+    if (role === 'Manager') {
+    const managerCard = generateManager(employee);
+    teamObj.push(managerCard);
+ }
+    if (role === 'Engineer') {
+    const engineerCard = generateEngineer(employee);
+    teamObj.push(engineerCard);
+ }
+    if (role === 'Intern') {
+    const internCard = generateIntern(employee);
+    teamObj.push(internCard);
+}} 
+
+const employeeCards = teamObj.join('')
+        
+            const generateTeam = generateTeamPage(employeeCards); 
+            return generateTeam;
+}
+const generateTeamPage = function (employeeCards) 
+{
+    return
+    `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -106,12 +106,15 @@ module.exports = (team) => {
     <main>
     <div class="container">
     <div class="row" id="cards">
-    ${generateTeam(team)}
+    ${employeeCards}
     </div>
     </div>
     </main>
+    <script src="../scripts/index.js"></script>
+    <script src="../scripts/src/renderHTML.js"></script>
     </body>
-    </html>
-    `;
-};
+    </html>`;
 }
+    
+
+module.exports = generateHTML;
